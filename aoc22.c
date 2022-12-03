@@ -42,7 +42,6 @@ typedef struct {
 // Step 2 here
 extern bool day01_solver(arguments *);
 extern bool day02_solver(arguments *);
-extern bool day03_solver(arguments *);
 
 // Step 3 here
 solver_entry solvers[] = {
@@ -50,9 +49,6 @@ solver_entry solvers[] = {
                 {"inputs/day01.txt", 75622, 213159},
                 {"inputs/sample01.txt", 24000, 45000},},
         {day02_solver,
-                {"inputs/day02.txt", 13526, 14204},
-                {"inputs/sample02.txt", 15,    12},},
-        {day03_solver,
                 {"inputs/day02.txt", 13526, 14204},
                 {"inputs/sample02.txt", 15,    12},},
 };
