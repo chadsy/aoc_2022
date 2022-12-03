@@ -23,11 +23,14 @@ the expected saved values
 -?, -h          Help:    you're looking at it
 ```
 
-# Build it
-
-Welp, there's a CMakeLists.txt (possibly in the top 5 of dumb hardcoded naming patterns from tools), so maybe i'll just work.
+# To Do
+There's a loop in `main()` to run all the available solution days. All the code inside it is duplicated outside the loop for a single day run. The code in both cases is largely identical and needs to be refactored. There are too many parameters that flow into the block to make function extraction reasonable, it would get ugly. But I want to fix that, one way or the other.
 
 Ultimately, I want to learn CMake well enough to be able to customize `CMakeLists.txt` and `./cmake-build-debug` and other CMake artifacts.
+
+# Build it
+
+Welp, there's a CMakeLists.txt (possibly in the top 5 of dumb hardcoded naming patterns from tools), so maybe i'll just work. Good luck.
 
 # License
 
