@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.23)
 project(aoc_2022 C)
-# set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR})
+set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/build )
 set(CMAKE_C_STANDARD 11)
-set(SOURCE_FILES aoc22.c day01.c day02.c day03.c day04.c)
+set(SOURCE_FILES aoc22.c day01.c day02.c day03.c aocutil.c) 
 add_executable(aoc ${SOURCE_FILES})

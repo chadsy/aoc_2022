@@ -41,15 +41,16 @@ bool day01_solver(arguments *args) {
         }
     }
 
+    free(buf);
+
     payloads[elf++] = cur;
 
     qsort(payloads, elf, sizeof(answer_t), comp_answer_desc);
 
-    free(buf);
-    free(payloads);
-
     args->answers[0] = payloads[0];
     args->answers[1] = payloads[0] + payloads[1] + payloads[2];
+
+    free(payloads);
 
     return true;
 }

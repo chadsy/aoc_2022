@@ -20,6 +20,7 @@
 #define min(a,b)            ((a)<(b)?(a):(b))
 #define max(a,b)            ((a)>(b)?(a):(b))
 
+int stricmp(char const *a, char const *b);
 char *trim(char *str);
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
