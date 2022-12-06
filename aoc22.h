@@ -25,7 +25,10 @@ char *trim(char *str);
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-typedef unsigned int answer_t;
+typedef union {
+    int   val;
+    char *pv;
+} answer_t;
 
 typedef struct {
     FILE *input;

@@ -34,8 +34,8 @@
 bool day03_solver(arguments *args) {
     char *buf = calloc(BUFSIZ, sizeof(char));
 
-    args->answers[0] = 0;
-    args->answers[1] = 0;
+    args->answers[0].val = 0;
+    args->answers[1].val = 0;
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // Part 1
@@ -60,7 +60,7 @@ bool day03_solver(arguments *args) {
         }
     }
 
-    args->answers[0] = sum;
+    args->answers[0].val = sum;
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // Part 2
@@ -101,7 +101,7 @@ bool day03_solver(arguments *args) {
         }
     }
 
-    args->answers[1] = sum;
+    args->answers[1].val = sum;
 
     free(buf);
     return true;

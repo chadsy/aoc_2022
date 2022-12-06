@@ -27,8 +27,8 @@ bool day04_solver(arguments *args) {
     int contains = 0;
     int overlaps = 0;
 
-    args->answers[0] = 0;
-    args->answers[1] = 0;
+    args->answers[0].val = 0;
+    args->answers[1].val = 0;
 
     while (trim(fgets(buf, BUFSIZ - 1, args->input))) {
         range a = {}, b = {};
@@ -61,8 +61,8 @@ bool day04_solver(arguments *args) {
 
     free(buf);
 
-    args->answers[0] = contains;
-    args->answers[1] = overlaps;
+    args->answers[0].val = contains;
+    args->answers[1].val = overlaps;
 
     return true;
 }

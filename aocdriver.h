@@ -21,6 +21,11 @@ typedef enum {
     day25,
 } daynum;
 
+typedef enum  {
+    ANS_INT,
+    ANS_STR,
+} answer_flag;
+
 typedef struct {
     daynum day;
     bool is_sample;
@@ -32,6 +37,7 @@ typedef struct {
 typedef struct {
     daynum day;
     bool (*solver)(arguments *);
+    answer_flag typ;
     const char *title;
 } solver_entry;
 

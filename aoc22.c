@@ -28,25 +28,29 @@ extern bool day01_solver(arguments *);
 extern bool day02_solver(arguments *);
 extern bool day03_solver(arguments *);
 extern bool day04_solver(arguments *);
+extern bool day05_solver(arguments *);
 
 // Step 3 here
 solver_entry solvers[] = {
-        {day01, day01_solver, "Prime solver for Day 01"},
-        {day02, day02_solver, "Prime solver for Day 02"},
-        {day03, day03_solver, "Prime solver for Day 03"},
-        {day04, day04_solver, "Prime solver for Day 04"},
+        {day01, day01_solver, ANS_INT, "Prime solver for Day 01"},
+        {day02, day02_solver, ANS_INT, "Prime solver for Day 02"},
+        {day03, day03_solver, ANS_INT, "Prime solver for Day 03"},
+        {day04, day04_solver, ANS_INT, "Prime solver for Day 04"},
+        {day05, day05_solver, ANS_STR, "Prime solver for Day 05"},
 };
 
 // Step 4 here
 dataset datasets[] = {
-        {day01, false, "inputs/day01.txt",    75622, 213159},
         {day01, true,  "inputs/sample01.txt", 24000, 45000},
-        {day02, false, "inputs/day02.txt",    13526, 14204},
+        {day01, false, "inputs/day01.txt",    75622, 213159},
         {day02, true,  "inputs/sample02.txt", 15,    12},
-        {day03, false, "inputs/day03.txt",    7597,  2607},
+        {day02, false, "inputs/day02.txt",    13526, 14204},
         {day03, true,  "inputs/sample03.txt", 157,   70},
-        {day04, false, "inputs/day04.txt",    466,   865},
+        {day03, false, "inputs/day03.txt",    7597,  2607},
         {day04, true,  "inputs/sample04.txt", 2,     4},
+        {day04, false, "inputs/day04.txt",    466,   865},
+        {day05, true,  "inputs/sample05.txt", {.pv = "a"},     {.pv = "a"}},
+        {day05, false, "inputs/day05.txt",    {.pv = "a"},     {.pv = "a"}},
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -113,7 +117,7 @@ int main(int argc, char **argv) {
         solver_entry se = solvers[i];
 
         for (int j = 0; j < countof(datasets); j++) {
-            if (datasets[j].day == day_num) {
+            if (datasets[j].day == se.day) {
 
                 dataset data = datasets[j];
 
@@ -122,8 +126,6 @@ int main(int argc, char **argv) {
                     continue;
 
                 arguments runinfo;
-                runinfo.answers[0] = 0;
-                runinfo.answers[1] = 0;
                 runinfo.input = fopen(data.data_file, "r");
 
                 bool result = true;
@@ -131,11 +133,16 @@ int main(int argc, char **argv) {
                 if (opt_profile) {
                     clock_t start, finish;
                     start = clock();
+
                     for (int r = 0; r < PROFILE_RUNS; r++) {
+                        runinfo.answers[0].val = 0;
+                        runinfo.answers[1].val = 0;
                         se.solver(&runinfo);
                         rewind(runinfo.input);
                     }
+
                     finish = clock();
+
                     double diff = (double) (finish - start) / CLOCKS_PER_SEC;
                     printf("day %d: took %lf seconds for %d iterations (%.2lf IPS)\n",
                            i + 1, diff, PROFILE_RUNS, 1.0f / diff * PROFILE_RUNS);
@@ -154,25 +161,25 @@ int main(int argc, char **argv) {
                     char *sample_slug = data.is_sample ? "sample: " : "";
 
                     printf("%s [%s%s]:\n", se.title, sample_slug, data.data_file);
-                    printf("  part 1: %u\n", runinfo.answers[0]);
-                    printf("  part 2: %u\n", runinfo.answers[1]);
+                    printf("  part 1: %u\n", runinfo.answers[0].val);
+                    printf("  part 2: %u\n", runinfo.answers[1].val);
                     fflush(stdout);
                 }
 
                 if (opt_unit_test) {
-                    if (runinfo.answers[0] == data.result_1 && runinfo.answers[1] == data.result_2) {
+                    if (runinfo.answers[0].val == data.result_1.val && runinfo.answers[1].val == data.result_2.val) {
                         printf(" success!\n");
                     }
                     else {
                         fprintf(stderr, "failed!\n");
-                        if (runinfo.answers[0] != data.result_1) {
+                        if (runinfo.answers[0].val != data.result_1.val) {
                             fprintf(stderr, "day %d part 1 failed: expected %u and received %u\n",
-                                    i + 1, data.result_1, runinfo.answers[0]);
+                                    i + 1, data.result_1.val, runinfo.answers[0].val);
                             fail_count++;
                         }
-                        if (runinfo.answers[1] != data.result_2) {
+                        if (runinfo.answers[1].val != data.result_2.val) {
                             fprintf(stderr, "day %d part 2 failed: expected %u and received %u\n",
-                                    i + 1, data.result_2, runinfo.answers[1]);
+                                    i + 1, data.result_2.val, runinfo.answers[1].val);
                             fail_count++;
                         }
                     }
