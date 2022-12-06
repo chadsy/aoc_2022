@@ -15,26 +15,29 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 // To add a solution for a new day:
-// Step 1: add a new dayxx.c file to the project (make sure it's in cmakelists.txt)
+// Step 1: create a new dayXX.c and add it to the cmakelists.txt file
 // Step 2: add a prototype for the extern solver function
 // Step 3: add the appropriate solver entry to the solvers[] table
-//         The solvers table takes a solver function pointer, then two struct instances
-//         of dataset type, one for puzzle and one for sample. Each dataset has a filename
-//         and the answers for parts 1 & 2.
-//         We want to capture these values as unit test results for the -t flag.
+//         The solvers table takes a day number, a solver function pointer, and a pretty name.
+//         You can have multiple solvers for a day. It helps if you use distinct pretty names.
+// Step 4: datasets that contain the day number, a bool indicating if it's a sample (test)
+//         dataset, the filename containing the data, and the part 1 & part 2 answer values.
 
 // Step 2 here
 extern bool day01_solver(arguments *);
 extern bool day02_solver(arguments *);
 extern bool day03_solver(arguments *);
+extern bool day04_solver(arguments *);
 
 // Step 3 here
 solver_entry solvers[] = {
         {day01, day01_solver, "Prime solver for Day 01"},
         {day02, day02_solver, "Prime solver for Day 02"},
         {day03, day03_solver, "Prime solver for Day 03"},
+        {day04, day04_solver, "Prime solver for Day 04"},
 };
 
+// Step 4 here
 dataset datasets[] = {
         {day01, false, "inputs/day01.txt",    75622, 213159},
         {day01, true,  "inputs/sample01.txt", 24000, 45000},
@@ -42,6 +45,8 @@ dataset datasets[] = {
         {day02, true,  "inputs/sample02.txt", 15,    12},
         {day03, false, "inputs/day03.txt",    7597,  2607},
         {day03, true,  "inputs/sample03.txt", 157,   70},
+        {day04, false, "inputs/day04.txt",    466,   865},
+        {day04, true,  "inputs/sample04.txt", 2,     4},
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -112,20 +117,21 @@ int main(int argc, char **argv) {
 
                 dataset data = datasets[j];
 
-                if (data.is_sample && !opt_sample_data && !opt_unit_test)
+                if (!opt_sample_data && data.is_sample ||
+                    opt_sample_data && !data.is_sample)
                     continue;
 
                 arguments runinfo;
-                runinfo.input = fopen(data.data_file, "r");
                 runinfo.answers[0] = 0;
                 runinfo.answers[1] = 0;
+                runinfo.input = fopen(data.data_file, "r");
 
                 bool result = true;
 
                 if (opt_profile) {
                     clock_t start, finish;
                     start = clock();
-                    for (int i = 0; i < PROFILE_RUNS; i++) {
+                    for (int r = 0; r < PROFILE_RUNS; r++) {
                         se.solver(&runinfo);
                         rewind(runinfo.input);
                     }
@@ -195,4 +201,3 @@ void show_help(void) {
     printf("   -p              Profile: iterates 10 times over the dataset and times the execution\n");
     printf("   -?, -h          Help:    you're looking at it\n");
 }
-
