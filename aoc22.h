@@ -15,6 +15,8 @@
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+#define MAX_ANS_STR_LEN     128
+
 #define countof(x)          (sizeof(x)/sizeof(x[0]))
 
 #define min(a,b)            ((a)<(b)?(a):(b))
@@ -27,10 +29,10 @@ char *trim(char *str);
 
 typedef union {
     int   val;
-    char *pv;
+    char *pval;
 } answer_t;
 
 typedef struct {
     FILE *input;
-    answer_t answers[2];
+    answer_t actual[2];
 } arguments;

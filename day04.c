@@ -7,7 +7,12 @@
 // MIT License http://opensource.org/licenses/MIT
 
 // Day 04
-// The one about ...
+// The one about overlapping ranges.
+// Part one is to evalate the two ranges given and count the number of times when
+// range A contains B, or vice versa. Equality is also a contain, but a single one.
+//
+// Part two is same basic process, but instead count the number of times the two
+// ranges overlap.
 
 #include "aoc22.h"
 
@@ -26,9 +31,6 @@ bool day04_solver(arguments *args) {
     char *buf = calloc(BUFSIZ, sizeof(char));
     int contains = 0;
     int overlaps = 0;
-
-    args->answers[0].val = 0;
-    args->answers[1].val = 0;
 
     while (trim(fgets(buf, BUFSIZ - 1, args->input))) {
         range a = {}, b = {};
@@ -61,8 +63,8 @@ bool day04_solver(arguments *args) {
 
     free(buf);
 
-    args->answers[0].val = contains;
-    args->answers[1].val = overlaps;
+    args->actual[0].val = contains;
+    args->actual[1].val = overlaps;
 
     return true;
 }

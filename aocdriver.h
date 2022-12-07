@@ -26,10 +26,15 @@ typedef enum  {
     ANS_STR,
 } answer_flag;
 
+typedef union {
+    char *filename;
+    char *data;
+} input_t;
+
 typedef struct {
     daynum day;
     bool is_sample;
-    char *data_file;
+    input_t input;
     answer_t result_1;
     answer_t result_2;
 } dataset;

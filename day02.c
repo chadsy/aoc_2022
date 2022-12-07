@@ -55,12 +55,9 @@ int alternate_score(char you, char me) {
 bool day02_solver(arguments *args) {
     char you, me;
 
-    args->answers[0].val = 0;
-    args->answers[1].val = 0;
-
     while (fscanf(args->input, "%c %c\n",&you, &me) == 2) {
-        args->answers[0].val += basic_score(you, me);
-        args->answers[1].val += alternate_score(you, me);
+        args->actual[0].val += basic_score(you, me);
+        args->actual[1].val += alternate_score(you, me);
     }
 
     return true;

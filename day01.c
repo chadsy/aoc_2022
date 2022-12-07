@@ -20,11 +20,7 @@
 #define MAX_ELVES       1000
 
 int comp_answer_desc(const void *a, const void *b) {
-    int aval = ((answer_t *)a)->val;
-    int bval = ((answer_t *)b)->val;
-    return (bval - aval);
-//            return (((answer_t *)b)->val - ((answer_t *)b)->val);
-//            return ((*(answer_t *)b).val - (*(answer_t *)a).val);
+      return (((answer_t *)b)->val - ((answer_t *)a)->val);
 }
 
 bool day01_solver(arguments *args) {
@@ -36,7 +32,7 @@ bool day01_solver(arguments *args) {
 
     while (fgets(buf, sizeof(buf) - 1, args->input) && elf < MAX_ELVES) {
         if (!strlen(trim(buf))) {
-            // end of elf
+            // empty line means end of current elf, so dump it off
             payloads[elf] = cur;
             cur = 0;
             elf++;
@@ -45,15 +41,14 @@ bool day01_solver(arguments *args) {
         }
     }
 
-    free(buf);
-
     payloads[elf++] = cur;
 
     qsort(payloads, elf, sizeof(payloads[0]), comp_answer_desc);
 
-    args->answers[0].val = payloads[0];
-    args->answers[1].val = payloads[0] + payloads[1] + payloads[2];
+    args->actual[0].val = payloads[0];
+    args->actual[1].val = payloads[0] + payloads[1] + payloads[2];
 
+    free(buf);
     free(payloads);
 
     return true;
