@@ -29,7 +29,7 @@ extern bool day02_solver(arguments *);
 extern bool day03_solver(arguments *);
 extern bool day04_solver(arguments *);
 extern bool day05_solver(arguments *);
-//extern bool day06_solver(arguments *);
+extern bool day06_solver(arguments *);
 
 // Step 3 here
 solver_entry solvers[] = {
@@ -38,7 +38,7 @@ solver_entry solvers[] = {
         {day03, day03_solver, ANS_INT, "Prime solver for Day 03"},
         {day04, day04_solver, ANS_INT, "Prime solver for Day 04"},
         {day05, day05_solver, ANS_STR, "Prime solver for Day 05"},
-//        {day06, day06_solver, ANS_STR, "Prime solver for Day 06"},
+        {day06, day06_solver, ANS_INT, "Prime solver for Day 06"},
 };
 
 // Step 4 here
@@ -53,14 +53,12 @@ dataset datasets[] = {
         {day04, false, "inputs/day04.txt", 466, 865},
         {day05, true, "inputs/sample05.txt", {.pval = "CMZ"}, {.pval = "MCD"}},
         {day05, false, "inputs/day05.txt", {.pval = "BWNCQRMDB"}, {.pval = "NHWZCBNBF"}},
-        {day06, true, "inputs/sample06a.txt", 0, 0},
-        {day06, false, "inputs/day06.txt", 0, 0},
-//        {day06, true, {.data = "mjqjpqmgbljsphdztnvjfqwrcgsmlb"}, 7, 0},
-//        {day06, true, {.data = "bvwbjplbgvbhsrlpgdmjqwftvncz"}, 5, 0},
-//        {day06, true, {.data = "nppdvjthqldpwncqszvftbrmjlhg"}, 6, 0},
-//        {day06, true, {.data = "nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg"}, 10, 0},
-//        {day06, true, {.data = "zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw"}, 11, 0},
-//        {day06, true, {.data = "mjqjpqmgbljsphdztnvjfqwrcgsmlb"}, 7, 0},
+        {day06, true, "inputs/sample06a.txt", 7, 19},
+        {day06, true, "inputs/sample06b.txt", 5, 23},
+        {day06, true, "inputs/sample06c.txt", 6, 23},
+        {day06, true, "inputs/sample06d.txt", 10, 29},
+        {day06, true, "inputs/sample06e.txt", 11, 26},
+        {day06, false, "inputs/day06.txt", 1142, 2803},
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -79,7 +77,7 @@ int main(int argc, char **argv) {
     int solver_count = countof(solvers);
     int day_num = 0;
 
-    // Find the most recent solver (highest day number) in the table
+    // Find the most recent solver (the highest day number) in the table
     for (int i = 0; i < solver_count; i++) {
         if (solvers[i].day > day_num)
             day_num = solvers[i].day;
@@ -91,7 +89,7 @@ int main(int argc, char **argv) {
         if (argv[i][0] == 'a' && !stricmp(argv[i], "all")) {
             opt_run_all = true;
         }
-        // switch
+        // option switches
         else if (argv[i][0] == '-') {
             switch (tolower(argv[i][1])) {
                 case 'q':
@@ -151,9 +149,11 @@ int main(int argc, char **argv) {
 
                 dataset data = datasets[j];
 
-                // If we're not running unit tests or samples and it's a sample set
-                if (data.is_sample && (!opt_sample_data && !opt_unit_test))
-                    continue;
+                // If we're not running unit tests or samples and it's a sample set, skip it
+                if (!opt_unit_test) {
+                    if (!data.is_sample && opt_sample_data)
+                        continue;
+                }
 
                 arguments runinfo;
 
@@ -228,6 +228,8 @@ int main(int argc, char **argv) {
                                     render_typed_answer(&se, runinfo.actual[1]));
                             fprintf(stderr, ", expected %s\n", render_typed_answer(&se, data.result_2));
                         }
+                        if (!fail_count)
+                            printf("Success!\n");
                     }
 
                     if (opt_profile) {
