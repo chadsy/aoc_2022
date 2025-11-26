@@ -65,6 +65,8 @@ void execute_move_multiple(stackref *stacks, instruction i) {
         char val = stack_pop(worker);
         stack_push(stacks[i.to - 1], val);
     }
+
+    stack_destroy(worker);
 }
 
 bool day05_solver(arguments *args) {
@@ -135,6 +137,11 @@ bool day05_solver(arguments *args) {
     }
 
     strcpy(args->actual[1].pval, result);
+
+    for (int i = 0; i < countof(single_stacks); i++) {
+        stack_destroy(single_stacks[i]);
+        stack_destroy(mult_stacks[i]);
+    }
 
     free(buf);
     return true;
